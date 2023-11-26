@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AdminController } from './admin.controller';
 import { AdminService } from './admin.service';
 import { adminProvider } from './admin.provider';
-import { MailServiceService } from 'src/mail-service/mail-service.service';
+import { MailServiceService } from '../mail-service/mail-service.service';
 import { JwtModule } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
 

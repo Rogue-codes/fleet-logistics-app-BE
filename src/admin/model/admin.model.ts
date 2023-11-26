@@ -42,6 +42,9 @@ export class AdminModel extends Model {
   password: string;
 
   @Column
+  is_admin: boolean;
+
+  @Column
   phone: string;
 
   @Column({

@@ -5,7 +5,8 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { AdminModel } from './model/admin.model';
+// import { AdminModel } from './model/admin.model';
+import { AdminModel } from '../admin/model/admin.model';
 import {
   CreateAdminDto,
   adminLoginDTO,
@@ -15,7 +16,7 @@ import {
   verifyResetpasswordDTO,
 } from './dto/admin.create.dto';
 import * as bcrypt from 'bcrypt';
-import { MailServiceService } from 'src/mail-service/mail-service.service';
+import { MailServiceService } from '../mail-service/mail-service.service';
 import { JwtService } from '@nestjs/jwt';
 import {
   IPasswordReset,
@@ -123,6 +124,7 @@ export class AdminService {
         FirstName: admin.firstName,
         lastName: admin.lastName,
         email: admin.email,
+        isAdmin: admin.is_admin,
       },
       access_token,
     };
@@ -208,9 +210,39 @@ export class AdminService {
         FirstName: registeredUser.firstName,
         lastName: registeredUser.lastName,
         email: registeredUser.email,
+        isAdmin: registeredUser.is_admin,
       },
       access_token: token,
     };
+  }
+
+  async getUserFromToken(token: string): Promise<AdminModel | boolean> {
+    // verify token
+    let res;
+    try {
+      res = await this.jwtService.verifyAsync(token, {
+        secret: process.env.JWT_SECRET,
+      });
+      console.log('res:', res);
+    } catch (error) {
+      res = false;
+    }
+    if (!!res) {
+      try {
+        // get the user using the id
+        const admin = await this.admin.findOne({
+          where: {
+            id: res.id,
+          },
+        });
+
+        return admin;
+      } catch (error) {
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
 
   async passwordReset({

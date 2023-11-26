@@ -1,8 +1,9 @@
 import { Logger } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { Sequelize } from 'sequelize-typescript';
-import { AdminModel } from 'src/admin/model/admin.model';
-import { PasswordReset } from 'src/admin/model/passwordreset.model';
+import { AdminModel } from '../admin/model/admin.model';
+import { PasswordReset } from '../admin/model/passwordreset.model';
+import { StaffModel } from 'src/admin-actions/model/staff.model';
 
 dotenv.config();
 
@@ -24,7 +25,7 @@ export const databaseProviders = [
           alter: true,
         },
       });
-      sequelize.addModels([AdminModel, PasswordReset]);
+      sequelize.addModels([AdminModel, PasswordReset, StaffModel]);
       return sequelize;
     },
   },

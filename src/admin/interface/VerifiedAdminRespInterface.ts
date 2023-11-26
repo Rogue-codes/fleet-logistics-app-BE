@@ -6,6 +6,7 @@ export interface VerifiedAdminRespDto {
     FirstName: string;
     lastName: string;
     email: string;
+    isAdmin: boolean;
   };
   access_token?: string;
 }
